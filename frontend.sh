@@ -1,16 +1,17 @@
+source = common.sh
+component = frontend
 echo "********* Install nginx webserver *************"
-dnf install nginx -y >>/tmp/frontend.log
+dnf install nginx -y >>log_file1
 cp expense.conf /etc/nginx/default.d/expense.conf
-systemctl enable nginx >>/tmp/frontend.log
-systemctl start nginx >>/tmp/frontend.log
+
+enable_service_restart
 
 echo "************ remove default nginx static content **********"
 rm -rf /usr/share/nginx/html/*
 
-echo "download frontend app & host the application in app directory***********"
-curl -s -o /tmp/frontend.zip https://expense-artifacts.s3.amazonaws.com/frontend.zip
+echo "download $component app & host the application in app directory***********"
 cd /usr/share/nginx/html
-unzip /tmp/frontend.zip >>/tmp/frontend.log
+download_extract
 
 echo "********** restart nginx server    ************ "
-systemctl restart nginx >>/tmp/frontend.log
+systemctl restart nginx >>$log_file1
