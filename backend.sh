@@ -31,7 +31,7 @@ mkdir /app
 cd /app
 
 echo Download and Extract $component
-download_extract
+download_and_extract
 
 echo Install Backend Service
 npm install >>$log_file

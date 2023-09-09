@@ -16,7 +16,8 @@ status_check
 
 cd /usr/share/nginx/html
 echo Download $component
-download_extract
+
+download_and_extract
 
 echo Start nginx service
 systemctl enable nginx &>>log_file
