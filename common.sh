@@ -11,7 +11,7 @@ status_check
 enable_service_restart() {
   echo Daemon-reload for $component service
   systemctl daemon-reload >>$log_file
-  status_checkreo
+  status_check
   echo Enable for $component service
   systemctl enable $component >>$log_file
   status_check
