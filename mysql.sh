@@ -1,7 +1,7 @@
 source common.sh
 component=mysqld
 
-echo Ddisable existing mysql version 8
+echo Disable existing mysql version 8
 dnf module disable mysql -y >>log_file
 status_check
 

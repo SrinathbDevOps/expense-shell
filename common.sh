@@ -8,7 +8,7 @@ unzip /tmp/$component.zip >>$log_file
 status_check
 }
 
-
+log_file=/tmp/expense.log
 enable_service_restart() {
   echo Daemon-reload for $component service
   systemctl daemon-reload >>$log_file
