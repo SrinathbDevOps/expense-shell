@@ -1,17 +1,24 @@
-source = common.sh
-component = frontend
-echo "********* Install nginx webserver *************"
-dnf install nginx -y >>log_file1
-cp expense.conf /etc/nginx/default.d/expense.conf
+source common.sh
+component=frontend
+echo Install nginx Server
+dnf install nginx -y &>>log_file
+status_check
+echo Placing expense config file in nginx
+cp expense.conf /etc/nginx/default.d/expense.conf >>$log_file
+status_check
 
 enable_service_restart
 
-echo "************ remove default nginx static content **********"
-rm -rf /usr/share/nginx/html/*
+echo Remove default nginx content
+rm -rf /usr/share/nginx/html/* >>$log_file
+status_check
 
-echo "download $component app & host the application in app directory***********"
+
 cd /usr/share/nginx/html
+echo Download $component
 download_extract
 
-echo "********** restart nginx server    ************ "
-systemctl restart nginx >>$log_file1
+echo Start nginx service
+systemctl enable nginx &>>log_file
+systemctl restart nginx &>>log_file
+status_check

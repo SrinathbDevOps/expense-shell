@@ -1,29 +1,50 @@
-source = common.sh
-component = backend
+source common.sh
+component=backend
 
-echo "**********Downloading nodejs dependencies for installing nodejs **********"
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+type npm &>>$log_file
+if [ $? -ne 0 ]; then
+  echo Install NodeJS Repo
+  curl -sL https://rpm.nodesource.com/setup_lts.x | bash >>$log_file
+  status_check
 
-echo "********* Installing Nodejs ************"
-dnf install nodejs -y >>log_file
-echo "******Add expense user ******"
-useradd expense >>log_file
+  echo Installing NodeJs
+  dnf install nodejs -y >>log_file
+  status_check
+fi
 
-echo "****** create backend service **********"
-cp $component.service /etc/systemd/system/$component.service
-echo "Create app directory & Host backend app ********"
-rm -rf /app
+echo Add expense user
+id expense &>>$log_file
+if [ $? -ne 0]; then
+  useradd expense >>log_file
+fi
+status_check
+
+echo copy backend service file
+cp $component.service /etc/systemd/system/$component.service &>>log_file
+status_check
+echo Cleanup app directory
+rm -rf /app >>$log_file
+status_check
+
+echo Create app directory
 mkdir /app
 cd /app
-echo download & extract $component
+
+echo Download and Extract $component
 download_extract
 
-echo "*********install backend app ***********"
+echo Install Backend Service
 npm install >>$log_file
+status_check
 
-echo "Restart services"
+echo Restart Service
 enable_service_restart
 
-echo "**********Install mysql client & load scheme ***************"
+echo Install mysql client
 dnf install mysql -y >>log_file
-mysql -h mysql.sbdevops.online -uroot -pExpenseApp@1 < /app/schema/backend.sql >>log_file
+status_check
+
+echo Load Schema
+mysql_root_password=$1
+mysql -h mysql.sbdevops.online -uroot -p$mysql_root_password < /app/schema/backend.sql >>log_file
+status_check
