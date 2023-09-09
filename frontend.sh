@@ -15,11 +15,12 @@ status_check
 
 
 cd /usr/share/nginx/html
-echo Download $component
+#echo Download $component
 
 download_and_extract
 
 echo Start nginx service
+systemctl daemon-reload &>>log_file
 systemctl enable nginx &>>log_file
 systemctl restart nginx &>>log_file
 status_check
