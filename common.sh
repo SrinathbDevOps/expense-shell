@@ -1,4 +1,4 @@
-log_file = /tmp/expense.log
+log_file=/tmp/expense.log
 download_and_extract() {
 echo download $component
 curl -s -o /tmp/$component.zip https://expense-artifacts.s3.amazonaws.com/$component.zip >>$log_file
@@ -7,11 +7,11 @@ echo extract $component
 unzip /tmp/$component.zip >>$log_file
 status_check
 }
-log_file=/tmp/expense.log
+
 enable_service_restart() {
   echo Daemon-reload for $component service
   systemctl daemon-reload >>$log_file
-  status_check
+  status_checkreo
   echo Enable for $component service
   systemctl enable $component >>$log_file
   status_check
