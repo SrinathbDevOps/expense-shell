@@ -7,7 +7,7 @@ echo Placing expense config file in nginx
 cp expense.conf /etc/nginx/default.d/expense.conf >>$log_file
 status_check
 
-enable_service_restart
+#enable_service_restart
 
 echo Remove default nginx content
 rm -rf /usr/share/nginx/html/* >>$log_file
