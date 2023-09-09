@@ -1,7 +1,7 @@
 source common.sh
 component=frontend
 echo Install nginx Server
-dnf install nginx -y &>>log_file
+dnf install nginx -y &>>$log_file
 status_check
 echo Placing expense config file in nginx
 cp expense.conf /etc/nginx/default.d/expense.conf >>$log_file
